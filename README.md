@@ -1,144 +1,74 @@
-# Suricata
-
-[![Fuzzing Status](https://oss-fuzz-build-logs.storage.googleapis.com/badges/suricata.svg)](https://bugs.chromium.org/p/oss-fuzz/issues/list?sort=-opened&can=1&q=proj:suricata)
-[![codecov](https://codecov.io/gh/OISF/suricata/branch/master/graph/badge.svg?token=QRyyn2BSo1)](https://codecov.io/gh/OISF/suricata)
-
-## Introduction
-
-[Suricata](https://suricata.io) is a network IDS, IPS and NSM engine
-developed by the [OISF](https://oisf.net) and the Suricata community.
-
-## Resources
-
-- [Home Page](https://suricata.io)
-- [Bug Tracker](https://redmine.openinfosecfoundation.org/projects/suricata)
-- [User Guide](https://docs.suricata.io)
-- [Dev Guide](https://docs.suricata.io/en/latest/devguide/index.html)
-- [Installation Guide](https://docs.suricata.io/en/latest/install.html)
-- [User Support Forum](https://forum.suricata.io)
-
-## Contributing
-
-We're happily taking patches and other contributions. Please see our
-[Contribution
-Process](https://docs.suricata.io/en/latest/devguide/contributing/contribution-process.html)
-for how to get started.
-
-Suricata is a complex piece of software dealing with mostly untrusted
-input. Mishandling this input will have serious consequences:
-
-* in IPS mode a crash may knock a network offline
-* in passive mode a compromise of the IDS may lead to loss of critical
-  and confidential data
-* missed detection may lead to undetected compromise of the network
-
-In other words, we think the stakes are pretty high, especially since
-in many common cases the IDS/IPS will be directly reachable by an
-attacker.
-
-For this reason, we have developed a QA process that is quite
-extensive. A consequence is that contributing to Suricata can be a
-somewhat lengthy process.
-
-On a high level, the steps are:
-
-1. GitHub-CI based checks. This runs automatically when a pull request
-   is made.
-2. Review by devs from the team and community
-3. QA runs from private QA setups. These are private due to the nature
-   of the test traffic.
-
-### Overview of Suricata's QA steps
-
-OISF team members are able to submit builds to our private QA
-setup. It will run a series of build tests and a regression suite to
-confirm no existing features break.
-
-The final QA runs takes a few hours minimally, and generally runs
-overnight. It currently runs:
-
-- extensive build tests on different OS', compilers, optimization
-  levels, configure features
-- static code analysis using cppcheck, scan-build
-- runtime code analysis using valgrind, AddressSanitizer,
-  LeakSanitizer
-- regression tests for past bugs
-- output validation of logging
-- unix socket testing
-- pcap based fuzz testing using ASAN and LSAN
-- traffic replay based IDS and IPS tests
-
-Next to these tests, based on the type of code change further tests
-can be run manually:
-
-- traffic replay testing (multi-gigabit)
-- large pcap collection processing (multi-terabytes)
-- fuzz testing (might take multiple days or even weeks)
-- pcap based performance testing
-- live performance testing
-- various other manual tests based on evaluation of the proposed
-  changes
-
-It's important to realize that almost all of the tests above are used
-as acceptance tests. If something fails, it's up to you to address
-this in your code.
-
-One step of the QA is currently run post-merge. We submit builds to
-the Coverity Scan program. Due to limitations of this (free) service,
-we can submit once a day max.  Of course it can happen that after the
-merge the community will find issues. For both cases we request you to
-help address the issues as they may come up.
-
-## FAQ
-
-__Q: Will you accept my PR?__
-
-A: That depends on a number of things, including the code
-quality. With new features it also depends on whether the team and/or
-the community think the feature is useful, how much it affects other
-code and features, the risk of performance regressions, etc.
-
-__Q: When will my PR be merged?__
-
-A: It depends, if it's a major feature or considered a high risk
-change, it will probably go into the next major version.
-
-__Q: Why was my PR closed?__
-
-A: As documented in the [Suricata GitHub
-workflow](https://docs.suricata.io/en/latest/devguide/contributing/github-pr-workflow.html),
-we expect a new pull request for every change.
-
-Normally, the team (or community) will give feedback on a pull request
-after which it is expected to be replaced by an improved PR. So look
-at the comments. If you disagree with the comments we can still
-discuss them in the closed PR.
-
-If the PR was closed without comments it's likely due to QA
-failure. If the GitHub-CI checks failed, the PR should be fixed right
-away. No need for a discussion about it, unless you believe the QA
-failure is incorrect.
-
-__Q: The compiler/code analyser/tool is wrong, what now?__
-
-A: To assist in the automation of the QA, we're not accepting warnings
-or errors to stay. In some cases this could mean that we add a
-suppression if the tool supports that (e.g. valgrind, DrMemory). Some
-warnings can be disabled. In some exceptional cases the only
-'solution' is to refactor the code to work around a static code
-checker limitation false positive. While frustrating, we prefer this
-over leaving warnings in the output. Warnings tend to get ignored and
-then increase risk of hiding other warnings.
-
-__Q: I think your QA test is wrong__
-
-A: If you really think it is, we can discuss how to improve it. But
-don't come to this conclusion too quickly, more often it's the code
-that turns out to be wrong.
-
-__Q: Do you require signing of a contributor license agreement?__
-
-A: Yes, we do this to keep the ownership of Suricata in one hand: the
-Open Information Security Foundation. See
-http://suricata.io/about/open-source/ and
-http://suricata.io/about/contribution-agreement/
+<div class="Box-sc-g0xbh4-0 bJMeLZ js-snippet-clipboard-copy-unpositioned" data-hpc="true"><article class="markdown-body entry-content container-lg" itemprop="text"><h1 tabindex="-1" dir="auto"><a id="user-content-suricata" class="anchor" aria-hidden="true" tabindex="-1" href="#suricata"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">最小</font></font></h1>
+<p dir="auto"><a href="https://bugs.chromium.org/p/oss-fuzz/issues/list?sort=-opened&amp;can=1&amp;q=proj:suricata" rel="nofollow"><img src="https://camo.githubusercontent.com/972b0dcd657c40cf7b831693ebc9af92714ba2bcbf526c79b7f5a4f45236d088/68747470733a2f2f6f73732d66757a7a2d6275696c642d6c6f67732e73746f726167652e676f6f676c65617069732e636f6d2f6261646765732f73757269636174612e737667" alt="模糊测试状态" data-canonical-src="https://oss-fuzz-build-logs.storage.googleapis.com/badges/suricata.svg" style="max-width: 100%;"></a>
+<a href="https://codecov.io/gh/OISF/suricata" rel="nofollow"><img src="https://camo.githubusercontent.com/01037ae5b8ea432f85d7a7348c7853b3f033db81881b8c15da9c5080605d48de/68747470733a2f2f636f6465636f762e696f2f67682f4f4953462f73757269636174612f6272616e63682f6d61737465722f67726170682f62616467652e7376673f746f6b656e3d515279796e3242536f31" alt="代码科夫" data-canonical-src="https://codecov.io/gh/OISF/suricata/branch/master/graph/badge.svg?token=QRyyn2BSo1" style="max-width: 100%;"></a></p>
+<h2 tabindex="-1" dir="auto"><a id="user-content-introduction" class="anchor" aria-hidden="true" tabindex="-1" href="#introduction"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">介绍</font></font></h2>
+<p dir="auto"><a href="https://suricata.io" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Suricata是由</font></font></a><font style="vertical-align: inherit;"></font><a href="https://oisf.net" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">OISF</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">和 Suricata 社区</font><font style="vertical-align: inherit;">开发的网络 IDS、IPS 和 NSM 引擎。</font></font></p>
+<h2 tabindex="-1" dir="auto"><a id="user-content-resources" class="anchor" aria-hidden="true" tabindex="-1" href="#resources"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">资源</font></font></h2>
+<ul dir="auto">
+<li><a href="https://suricata.io" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">主页</font></font></a></li>
+<li><a href="https://redmine.openinfosecfoundation.org/projects/suricata" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">错误追踪器</font></font></a></li>
+<li><a href="https://docs.suricata.io" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">用户指南</font></font></a></li>
+<li><a href="https://docs.suricata.io/en/latest/devguide/index.html" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">开发指南</font></font></a></li>
+<li><a href="https://docs.suricata.io/en/latest/install.html" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">安装指南</font></font></a></li>
+<li><a href="https://forum.suricata.io" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">用户支持论坛</font></font></a></li>
+</ul>
+<h2 tabindex="-1" dir="auto"><a id="user-content-contributing" class="anchor" aria-hidden="true" tabindex="-1" href="#contributing"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">贡献</font></font></h2>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">我们很高兴接受补丁和其他贡献。</font><font style="vertical-align: inherit;">请参阅我们的
+</font></font><a href="https://docs.suricata.io/en/latest/devguide/contributing/contribution-process.html" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">贡献流程</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">
+了解如何开始。</font></font></p>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Suricata 是一款复杂的软件，主要处理不可信的输入。</font><font style="vertical-align: inherit;">错误处理此输入将产生严重后果：</font></font></p>
+<ul dir="auto">
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">在 IPS 模式下，崩溃可能会导致网络离线</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">在被动模式下，IDS 的泄露可能会导致关键和机密数据的丢失</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">漏检可能会导致网络受到未检测到的损害</font></font></li>
+</ul>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">换句话说，我们认为风险相当高，特别是在许多常见情况下，攻击者可以直接访问 IDS/IPS。</font></font></p>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">因此，我们开发了一个相当广泛的质量保证流程。</font><font style="vertical-align: inherit;">结果是，为 Suricata 做出贡献可能是一个有点漫长的过程。</font></font></p>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">从较高的层面来看，步骤是：</font></font></p>
+<ol dir="auto">
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">基于 GitHub-CI 的检查。</font><font style="vertical-align: inherit;">当发出拉取请求时，它会自动运行。</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">来自团队和社区的开发人员的审查</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">QA 从私人 QA 设置运行。</font><font style="vertical-align: inherit;">由于测试流量的性质，这些都是私有的。</font></font></li>
+</ol>
+<h3 tabindex="-1" dir="auto"><a id="user-content-overview-of-suricatas-qa-steps" class="anchor" aria-hidden="true" tabindex="-1" href="#overview-of-suricatas-qa-steps"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Suricata 的 QA 步骤概述</font></font></h3>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">OISF 团队成员能够将构建提交到我们的私人 QA 设置。</font><font style="vertical-align: inherit;">它将运行一系列构建测试和回归套件，以确认现有功能没有中断。</font></font></p>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">最终的 QA 运行至少需要几个小时，并且通常运行过夜。</font><font style="vertical-align: inherit;">目前运行：</font></font></p>
+<ul dir="auto">
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">在不同操作系统、编译器、优化级别、配置功能上进行广泛的构建测试</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">使用 cppcheck、scan-build 进行静态代码分析</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">使用 valgrind、AddressSanitizer、LeakSanitizer 进行运行时代码分析</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">对过去的错误进行回归测试</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">日志输出验证</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Unix 套接字测试</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">使用 ASAN 和 LSAN 基于 pcap 的模糊测试</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">基于 IDS 和 IPS 测试的流量重放</font></font></li>
+</ul>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">除了这些测试之外，还可以根据代码更改的类型手动运行进一步的测试：</font></font></p>
+<ul dir="auto">
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">流量重放测试（多千兆位）</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">大型 pcap 集合处理（数 TB）</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">模糊测试（可能需要几天甚至几周的时间）</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">基于pcap的性能测试</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">现场性能测试</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">基于对拟议变更的评估的各种其他手动测试</font></font></li>
+</ul>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">重要的是要认识到上述几乎所有测试都用作验收测试。</font><font style="vertical-align: inherit;">如果出现问题，您可以在代码中解决此问题。</font></font></p>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">目前，质量检查的一个步骤是在合并后运行。</font><font style="vertical-align: inherit;">我们将构建提交到 Coverity Scan 计划。</font><font style="vertical-align: inherit;">由于此（免费）服务的限制，我们每天最多可以提交一次。</font><font style="vertical-align: inherit;">当然，合并后社区可能会发现问题。</font><font style="vertical-align: inherit;">对于这两种情况，我们请求您帮助解决可能出现的问题。</font></font></p>
+<h2 tabindex="-1" dir="auto"><a id="user-content-faq" class="anchor" aria-hidden="true" tabindex="-1" href="#faq"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a>FAQ</h2>
+<p dir="auto"><strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">问：你会接受我的 PR 吗？</font></font></strong></p>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">答：这取决于很多因素，包括代码质量。</font><font style="vertical-align: inherit;">对于新功能，它还取决于团队和/或社区是否认为该功能有用、它对其他代码和功能的影响程度、性能回归的风险等。</font></font></p>
+<p dir="auto"><strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">问：我的 PR 什么时候会被合并？</font></font></strong></p>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">答：这取决于，如果它是一个主要功能或被认为是高风险更改，它可能会进入下一个主要版本。</font></font></p>
+<p dir="auto"><strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">问：为什么我的 PR 被关闭？</font></font></strong></p>
+<p dir="auto"><font style="vertical-align: inherit;"></font><a href="https://docs.suricata.io/en/latest/devguide/contributing/github-pr-workflow.html" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">答：如Suricata GitHub 工作流程</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">中所述</font><font style="vertical-align: inherit;">，我们预计每次更改都会有一个新的拉取请求。</font></font></p>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">通常，团队（或社区）会对拉取请求提供反馈，之后预计会被改进的 PR 所取代。</font><font style="vertical-align: inherit;">所以看看评论。</font><font style="vertical-align: inherit;">如果您不同意这些评论，我们仍然可以在封闭式 PR 中进行讨论。</font></font></p>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">如果 PR 在没有评论的情况下被关闭，则可能是由于 QA 失败。</font><font style="vertical-align: inherit;">如果 GitHub-CI 检查失败，则应立即修复 PR。</font><font style="vertical-align: inherit;">无需对此进行讨论，除非您认为 QA 失败是不正确的。</font></font></p>
+<p dir="auto"><strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">问：编译器/代码分析器/工具错误，现在怎么办？</font></font></strong></p>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">答：为了帮助 QA 自动化，我们不会接受留下的警告或错误。</font><font style="vertical-align: inherit;">在某些情况下，这可能意味着如果工具支持（例如 valgrind、DrMemory），我们会添加抑制。</font><font style="vertical-align: inherit;">一些警告可以被禁用。</font><font style="vertical-align: inherit;">在某些特殊情况下，唯一的“解决方案”是重构代码以解决静态代码检查器误报限制。</font><font style="vertical-align: inherit;">虽然令人沮丧，但我们更喜欢这样做而不是在输出中留下警告。</font><font style="vertical-align: inherit;">警告往往会被忽略，从而增加隐藏其他警告的风险。</font></font></p>
+<p dir="auto"><strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">问：我认为你们的 QA 测试是错误的</font></font></strong></p>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">A：如果你确实这么认为，我们可以讨论如何改进。</font><font style="vertical-align: inherit;">但不要太快得出这个结论，更多时候是代码被证明是错误的。</font></font></p>
+<p dir="auto"><strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">问：您需要签署贡献者许可协议吗？</font></font></strong></p>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">答：是的，我们这样做是为了将 Suricata 的所有权掌握在开放信息安全基金会的手中。</font><font style="vertical-align: inherit;">请参阅
+</font></font><a href="http://suricata.io/about/open-source/" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">http://suricata.io/about/open-source/</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">和
+</font></font><a href="http://suricata.io/about/contribution-agreement/" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">http://suricata.io/about/contribution-agreement/</font></font></a></p>
+</article></div>
